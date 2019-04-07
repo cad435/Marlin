@@ -225,8 +225,8 @@
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
 //#define HOTEND_OFFSET_X {0.0, 20.00} // (in mm) for each extruder, offset of the hotend on the X axis
-#define HOTEND_OFFSET_Y {0.0, 0.5}  // (in mm) for each extruder, offset of the hotend on the Y axis
-#define HOTEND_OFFSET_Z {0.0, -0.25}  // (in mm) for each extruder, offset of the hotend on the Z axis
+#define HOTEND_OFFSET_Y {0.0, 0}  // (in mm) for each extruder, offset of the hotend on the Y axis
+#define HOTEND_OFFSET_Z {0.0, 0.3}  // (in mm) for each extruder, offset of the hotend on the Z axis
 
 // @section machine
 
@@ -610,7 +610,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 83.6, 83.6, 4000, 136 } //Initiale, Berechnete Config
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 81.5, 81.5, 8000, 155 , 155} //Getunte config
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 81, 81, 8000, 155 , 155} //Getunte config
 
 /**
  * Default Max Feed Rate (mm/s)

@@ -177,6 +177,7 @@ uint16_t max_display_update_time = 0;
   void lcd_move_menu();
   void lcd_control_menu();
   void lcd_control_temperature_menu();
+  void lcd_prepare_temperature_menu();
   void lcd_control_motion_menu();
 
   #if DISABLED(SLIM_LCD_MENUS)
@@ -2665,6 +2666,13 @@ void lcd_quick_feedback(const bool clear_buttons) {
     #endif
         MENU_ITEM(submenu, MSG_MOVE_AXIS, lcd_move_menu);
 
+
+    //
+    // Added a slim "Prepare" --> "Temperature" menu
+    //
+
+    MENU_ITEM(submenu, MSG_TEMPERATURE, lcd_prepare_temperature_menu);
+
     //
     // Auto Home
     //
@@ -3587,6 +3595,50 @@ void lcd_quick_feedback(const bool clear_buttons) {
       //
       MENU_ITEM(submenu, MSG_PREHEAT_2_SETTINGS, lcd_control_temperature_preheat_material2_settings_menu);
     #endif
+
+    END_MENU();
+  }
+
+  /**
+   *
+   * "Prepare" > "Temperature" submenu
+   *
+   */
+  void lcd_prepare_temperature_menu() {
+    START_MENU();
+
+    //
+    // ^ Control
+    //
+    MENU_BACK(MSG_PREPARE);
+
+    //
+    // Nozzle:
+    // Nozzle [1-5]:
+    //
+    #if HOTENDS == 1
+      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE, &thermalManager.target_temperature[0], 0, HEATER_0_MAXTEMP - 15, watch_temp_callback_E0);
+    #else // HOTENDS > 1
+      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N1, &thermalManager.target_temperature[0], 0, HEATER_0_MAXTEMP - 15, watch_temp_callback_E0);
+      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N2, &thermalManager.target_temperature[1], 0, HEATER_1_MAXTEMP - 15, watch_temp_callback_E1);
+      #if HOTENDS > 2
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N3, &thermalManager.target_temperature[2], 0, HEATER_2_MAXTEMP - 15, watch_temp_callback_E2);
+        #if HOTENDS > 3
+          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N4, &thermalManager.target_temperature[3], 0, HEATER_3_MAXTEMP - 15, watch_temp_callback_E3);
+          #if HOTENDS > 4
+            MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N5, &thermalManager.target_temperature[4], 0, HEATER_4_MAXTEMP - 15, watch_temp_callback_E4);
+          #endif // HOTENDS > 4
+        #endif // HOTENDS > 3
+      #endif // HOTENDS > 2
+    #endif // HOTENDS > 1
+
+    //
+    // Bed:
+    //
+    #if HAS_HEATED_BED
+      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_BED, &thermalManager.target_temperature_bed, 0, BED_MAXTEMP - 15, watch_temp_callback_bed);
+    #endif
+
 
     END_MENU();
   }
