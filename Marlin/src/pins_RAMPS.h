@@ -421,6 +421,7 @@
 
     #if ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
 
+      //#define LCD_SCREEN_ROT_180
       #define BEEPER_PIN        37
 
       #if ENABLED(CR10_STOCKDISPLAY)
