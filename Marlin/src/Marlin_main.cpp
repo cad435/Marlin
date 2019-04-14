@@ -12212,8 +12212,14 @@ inline void invalid_extruder_error(const uint8_t e) {
 
 #endif // MIXING_EXTRUDER && MIXING_VIRTUAL_TOOLS > 1
 
-#if ENABLED(DUAL_X_CARRIAGE)
 
+
+
+
+
+
+
+#if ENABLED(DUAL_X_CARRIAGE)
   inline void dualx_tool_change(const uint8_t tmp_extruder, bool &no_move) {
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) {
@@ -12255,9 +12261,36 @@ inline void invalid_extruder_error(const uint8_t e) {
       planner.synchronize();
     }
 
-    // Apply Y & Z extruder offset (X offset is used as home pos with Dual X)
+
+    // Apply Y extruder offset (X offset is used as home pos with Dual X)
     current_position[Y_AXIS] -= hotend_offset[Y_AXIS][active_extruder] - hotend_offset[Y_AXIS][tmp_extruder];
-    current_position[Z_AXIS] -= hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
+
+    //Save Z-Pos, we don't want it to change if we're switching tools
+    float tmp_zPos = current_position[Z_AXIS];
+
+    //now, make a physical move to compensate the offset
+    //I'm only doing this for DXC_FULL_CONTROL_MODE right now, because I know the other DXC-Modes are working correctly
+    if (dual_x_carriage_mode == DXC_FULL_CONTROL_MODE)
+    {
+      //instead of only adding offset to a variable, move directly a bit up or down
+      planner.buffer_line(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS] - hotend_offset[Z_AXIS][active_extruder] + hotend_offset[Z_AXIS][tmp_extruder], current_position[E_CART], planner.max_feedrate_mm_s[Z_AXIS], active_extruder);
+      planner.synchronize();
+
+      //Now, correct the zPos, as we don't want it to change if we're switching tools
+      current_position[Z_AXIS] = tmp_zPos;
+    }
+    else
+    {
+      //again, if not in DXC_FULL_CONTROL_MODE I'm not touching the original code...
+      //Apply Z extruder offset (X offset is used as home pos with Dual X)
+      current_position[Z_AXIS] -= hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
+    }
+
+    //if in DXC_FULL_CONTROL_MODE, save the current position BEFORE actual Tool change
+    float tmp_xPos;
+    if (dual_x_carriage_mode == DXC_FULL_CONTROL_MODE)
+      tmp_xPos = current_position[X_AXIS];
+
 
     // Activate the new extruder ahead of calling set_axis_is_at_home!
     active_extruder = tmp_extruder;
@@ -12277,7 +12310,10 @@ inline void invalid_extruder_error(const uint8_t e) {
         // New current position is the position of the activated extruder
         current_position[X_AXIS] = inactive_extruder_x_pos;
         // Save the inactive extruder's position (from the old current_position)
-        inactive_extruder_x_pos = destination[X_AXIS];
+        //inactive_extruder_x_pos = destination[X_AXIS];
+
+        //recover the other carriage X-Pos from before the change
+        inactive_extruder_x_pos = tmp_xPos;
         break;
       case DXC_AUTO_PARK_MODE:
         // record raised toolhead position for use by unpark
@@ -12304,7 +12340,6 @@ inline void invalid_extruder_error(const uint8_t e) {
         #endif
         break;
     }
-
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) {
         SERIAL_ECHOLNPAIR("Active extruder parked: ", active_extruder_parked ? "yes" : "no");
@@ -12314,6 +12349,8 @@ inline void invalid_extruder_error(const uint8_t e) {
 
     // No extra case for HAS_ABL in DUAL_X_CARRIAGE. Does that mean they don't work together?
   }
+
+  //void dualx_tool_change
 
 #endif // DUAL_X_CARRIAGE
 
