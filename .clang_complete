@@ -1,17 +1,28 @@
 -IC:\Users\Alexander\.platformio\packages\framework-arduinoavr\cores\arduino
 -IC:\Users\Alexander\.platformio\packages\framework-arduinoavr\variants\mega
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\30aa480
--IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\Adafruit NeoPixel_ID28
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\Adafruit NeoPixel_ID28@1.1.3
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\Arduino-L6470\src
--IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\LiquidCrystal_ID136
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\LiquidCrystal_I2C_ID576@1.1.2
 -IC:\Users\Alexander\.platformio\packages\framework-arduinoavr\libraries\__cores__\arduino\Wire\src
--IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\SailfishLCD
--IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\SailfishRGB_LED
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\LiquidCrystal_ID136
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\SlowSoftI2CMaster
--IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\TMCStepper_ID5513\src
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\TMC2130Stepper_ID1493\src
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\TMC2208Stepper\src
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\TMC26X
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\U8glib-HAL_ID1932\src
 -IC:\Users\Alexander\.platformio\packages\framework-arduinoavr\libraries\__cores__\arduino\SPI\src
 -IC:\Users\Alexander\.platformio\packages\framework-arduinoavr\libraries\__cores__\arduino\SoftwareSerial\src
--IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\U8glib-HAL_ID1932\src
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\Adafruit NeoPixel_ID28
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\Arduino-L6470@src-34a8ae62584c89f7dccd42367de48639\src
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\LiquidCrystal_I2C_ID576
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\LiquidCrystal_ID136@1.3.4
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\SailfishLCD
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\SailfishRGB_LED
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\TMCStepper_ID5513\src
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-bixk15-package
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-pow4hm-package
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-x7iz4v-package
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\c1921b4
 -IC:\Users\Alexander\.platformio\lib\Bolder Flight Systems MPU9250_ID5602\src
 -IC:\Users\Alexander\.platformio\lib\STM32duino RTC_ID5502\src

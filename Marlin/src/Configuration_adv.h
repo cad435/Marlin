@@ -1058,7 +1058,7 @@
   #define E0_SENSE_RESISTOR   91
   #define E0_MICROSTEPS       16
 
-  #define E1_MAX_CURRENT    750
+  #define E1_MAX_CURRENT    850
   #define E1_SENSE_RESISTOR   91
   #define E1_MICROSTEPS       16
 
