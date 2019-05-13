@@ -23,6 +23,7 @@
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-bixk15-package
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-pow4hm-package
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-x7iz4v-package
+-IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\_tmp_installing-yqmpda-package
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\.piolibdeps\c1921b4
 -IC:\Users\Alexander\.platformio\lib\Bolder Flight Systems MPU9250_ID5602\src
 -IC:\Users\Alexander\.platformio\lib\STM32duino RTC_ID5502\src
@@ -40,7 +41,7 @@
 -IC:\Users\Alexander\.platformio\packages\tool-unity
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\include
 -IE:\_DATEN\Alexander\Projekte\_Projektordner\3D-Drucker\Akimbo_Umbau\Firmware\Marlin\Marlin
--DPLATFORMIO=30606
+-DPLATFORMIO=30607
 -DARDUINO_AVR_MEGA2560
 -DF_CPU=16000000L
 -DARDUINO_ARCH_AVR
