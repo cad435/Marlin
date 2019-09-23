@@ -39,7 +39,8 @@ public:
   #elif ENABLED(BACKLASH_COMPENSATION)
     static constexpr uint8_t correction = (BACKLASH_CORRECTION) * 0xFF;
     #ifdef BACKLASH_DISTANCE_MM
-      static constexpr float distance_mm[XYZ] = BACKLASH_DISTANCE_MM;
+      static float distance_mm[XYZ];
+      //static constexpr float distance_mm[XYZ] = BACKLASH_DISTANCE_MM;
     #endif
     #ifdef BACKLASH_SMOOTHING_MM
       static constexpr float smoothing_mm = BACKLASH_SMOOTHING_MM;

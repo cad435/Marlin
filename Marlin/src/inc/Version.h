@@ -73,7 +73,7 @@
   /**
    * Defines a generic printer name to be output to the LCD after booting Marlin.
    */
-  #define MACHINE_NAME "3D Printer"
+  #define MACHINE_NAME "MicroBot"
 
   /**
    * The SOURCE_CODE_URL is the location where users will find the Marlin Source
@@ -86,7 +86,7 @@
   /**
    * Default generic printer UUID.
    */
-  #define DEFAULT_MACHINE_UUID "cede2a2f-41a2-4748-9b12-c55c62f367ff"
+  #define DEFAULT_MACHINE_UUID "cede2a2f-41a2-11c4-0b0t-c55c62f367ff"
 
   /**
    * The WEBSITE_URL is the location where users can get more information such as
