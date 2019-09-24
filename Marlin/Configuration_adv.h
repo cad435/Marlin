@@ -610,7 +610,7 @@
 #if ENABLED(BACKLASH_COMPENSATION)
   // Define values for backlash distance and correction.
   // If BACKLASH_GCODE is enabled these values are the defaults.
-  #define BACKLASH_DISTANCE_MM { 0.0f, 0.25f, 0.0f } // (mm)
+  #define BACKLASH_DISTANCE_MM { 0.0f, 0.15f, 0.0f } // (mm)
   #define BACKLASH_CORRECTION    1.0       // 0.0 = no correction; 1.0 = full correction
 
   // Set BACKLASH_SMOOTHING_MM to spread backlash correction over multiple segments
