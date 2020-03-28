@@ -58,7 +58,7 @@
 #ifdef IS_RAMPS_13
   #define SERVO0_PIN        7   // RAMPS_13 // Will conflict with BTN_EN2 on LCD_I2C_VIKI
 #else
-  #define SERVO0_PIN       11
+  #define SERVO0_PIN       -1
 #endif
 #define SERVO1_PIN          -1 //6
 #define SERVO2_PIN          -1 //5
@@ -82,7 +82,7 @@
 // Z Probe (when not Z_MIN_PIN)
 //
 #ifndef Z_MIN_PROBE_PIN
-  #define Z_MIN_PROBE_PIN  32
+  #define Z_MIN_PROBE_PIN  -1
 #endif
 
 //
@@ -92,14 +92,14 @@
 #define X_DIR_PIN          55
 #define X_ENABLE_PIN       38
 #ifndef X_CS_PIN
-  #define X_CS_PIN         11
+  #define X_CS_PIN         32
 #endif
 
 #define Y_STEP_PIN         60
 #define Y_DIR_PIN          61
 #define Y_ENABLE_PIN       56
 #ifndef Y_CS_PIN
-  #define Y_CS_PIN         57
+  #define Y_CS_PIN         22
 #endif
 
 #define Z_STEP_PIN         46
@@ -113,22 +113,22 @@
 #define E0_DIR_PIN         28
 #define E0_ENABLE_PIN      24
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN        6
+  #define E0_CS_PIN        47
 #endif
 
 #define E1_STEP_PIN        36
 #define E1_DIR_PIN         34
 #define E1_ENABLE_PIN      30
 #ifndef E1_CS_PIN
-  #define E1_CS_PIN        5
+  #define E1_CS_PIN        45
 #endif
 
 
 #define E2_STEP_PIN        64
 #define E2_DIR_PIN         59
-#define E2_ENABLE_PIN      44
+#define E2_ENABLE_PIN      39
 #ifndef E2_CS_PIN
-  #define E2_CS_PIN        66
+  #define E2_CS_PIN        43
 #endif
 
 /**
@@ -205,15 +205,21 @@
 
 // SPI for Max6675 or Max31855 Thermocouple
 #if DISABLED(SDSUPPORT)
-  #define MAX6675_SS       66   // Do not use pin 53 if there is even the remote possibility of using Display/SD card
+  #define MAX6675_SS       -1   // Do not use pin 53 if there is even the remote possibility of using Display/SD card
 #else
-  #define MAX6675_SS       66   // Do not use pin 49 as this is tied to the switch inside the SD card socket to detect if there is an SD card present
+  #define MAX6675_SS       -1   // Do not use pin 49 as this is tied to the switch inside the SD card socket to detect if there is an SD card present
 #endif
+
+
+#define HEATER_0_PIN       10
+#define HEATER_1_PIN       9
+#define HEATER_BED_PIN     8
+#define FAN_PIN         4
 
 //
 // Augmentation for auto-assigning RAMPS plugs
 //
-#if DISABLED(IS_RAMPS_EEB) && DISABLED(IS_RAMPS_EEF) && DISABLED(IS_RAMPS_EFB) && DISABLED(IS_RAMPS_EFF) && DISABLED(IS_RAMPS_SF) && !PIN_EXISTS(MOSFET_D)
+/*#if DISABLED(IS_RAMPS_EEB) && DISABLED(IS_RAMPS_EEF) && DISABLED(IS_RAMPS_EFB) && DISABLED(IS_RAMPS_EFF) && DISABLED(IS_RAMPS_SF) && !PIN_EXISTS(MOSFET_D)
   #if HOTENDS > 1
     #if TEMP_SENSOR_BED
       #define IS_RAMPS_EEB
@@ -273,7 +279,7 @@
   #else                                               // Non-specific are "EFB" (i.e., "EFBF" or "EFBE")
     #define FAN_PIN        RAMPS_D9_PIN
   #endif
-#endif
+#endif*/
 
 //
 // Misc. Functions
@@ -282,12 +288,12 @@
 #define LED_PIN            13
 
 #ifndef FILWIDTH_PIN
-  #define FILWIDTH_PIN      5   // Analog Input on AUX2
+  #define FILWIDTH_PIN      -1   // Analog Input on AUX2
 #endif
 
 // define digital pin 4 for the filament runout sensor. Use the RAMPS 1.4 digital input 4 on the servos connector
 #ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN    4
+  #define FIL_RUNOUT_PIN    -1
 #endif
 
 #ifndef PS_ON_PIN
@@ -296,7 +302,7 @@
 
 #if ENABLED(CASE_LIGHT_ENABLE) && !defined(CASE_LIGHT_PIN) && !defined(SPINDLE_LASER_ENABLE_PIN)
   #if NUM_SERVOS <= 1 // try to use servo connector first
-    #define CASE_LIGHT_PIN    6   // MUST BE HARDWARE PWM
+    #define CASE_LIGHT_PIN    7   // MUST BE HARDWARE PWM
   #elif !(ENABLED(ULTRA_LCD) && ENABLED(NEWPANEL) \
       && (ENABLED(PANEL_ONE) || ENABLED(VIKI2) || ENABLED(miniVIKI) || ENABLED(MINIPANEL) || ENABLED(REPRAPWORLD_KEYPAD)))  // try to use AUX 2
     #define CASE_LIGHT_PIN   44   // MUST BE HARDWARE PWM
