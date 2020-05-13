@@ -59,6 +59,10 @@
 #include "gcode/parser.h"
 #include "gcode/queue.h"
 
+#if ENABLED(INFONOZZLE)
+  #include "feature/infoNozzle.h"
+#endif
+
 #if ENABLED(DIRECT_STEPPING)
   #include "feature/direct_stepping.h"
 #endif
@@ -1013,6 +1017,10 @@ void setup() {
 
   #if HAS_I2C_DIGIPOT
     SETUP_RUN(digipot_i2c_init());
+  #endif
+
+  #if ENABLED(INFONOZZLE)
+    SETUP_RUN(infoNozzle_i2c_init());
   #endif
 
   #if ENABLED(DAC_STEPPER_CURRENT)
