@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@
 #pragma once
 
 /**
- * HAL/HAL_ST7920.h
+ * HAL/ST7920.h
  * For the HALs that provide direct access to the ST7920 display
  * (bypassing U8G), it will allow the LIGHTWEIGHT_UI to operate.
  */
 
-#if HAS_GRAPHICAL_LCD && ENABLED(LIGHTWEIGHT_UI)
+#if BOTH(HAS_GRAPHICAL_LCD, LIGHTWEIGHT_UI)
   void ST7920_cs();
   void ST7920_ncs();
   void ST7920_set_cmd();

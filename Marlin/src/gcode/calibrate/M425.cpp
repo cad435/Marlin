@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,10 +46,19 @@
 void GcodeSuite::M425() {
   bool noArgs = true;
 
-  LOOP_XYZ(i) {
-    if (parser.seen(axis_codes[i])) {
+  auto axis_can_calibrate = [](const uint8_t a) {
+    switch (a) {
+      default:
+      case X_AXIS: return AXIS_CAN_CALIBRATE(X);
+      case Y_AXIS: return AXIS_CAN_CALIBRATE(Y);
+      case Z_AXIS: return AXIS_CAN_CALIBRATE(Z);
+    }
+  };
+
+  LOOP_XYZ(a) {
+    if (AXIS_CAN_CALIBRATE(a) && parser.seen(XYZ_CHAR(a))) {
       planner.synchronize();
-      backlash.distance_mm[i] = parser.has_value() ? parser.value_linear_units() : backlash.get_measurement(i);
+      backlash.distance_mm[a] = parser.has_value() ? parser.value_linear_units() : backlash.get_measurement(AxisEnum(a));
       noArgs = false;
     }
   }
@@ -74,9 +83,8 @@ void GcodeSuite::M425() {
     SERIAL_ECHOLNPGM("active:");
     SERIAL_ECHOLNPAIR("  Correction Amount/Fade-out:     F", backlash.get_correction(), " (F1.0 = full, F0.0 = none)");
     SERIAL_ECHOPGM("  Backlash Distance (mm):        ");
-    LOOP_XYZ(a) {
-      SERIAL_CHAR(' ');
-      SERIAL_CHAR(axis_codes[a]);
+    LOOP_XYZ(a) if (axis_can_calibrate(a)) {
+      SERIAL_CHAR(' ', XYZ_CHAR(a));
       SERIAL_ECHO(backlash.distance_mm[a]);
       SERIAL_EOL();
     }
@@ -88,10 +96,9 @@ void GcodeSuite::M425() {
     #if ENABLED(MEASURE_BACKLASH_WHEN_PROBING)
       SERIAL_ECHOPGM("  Average measured backlash (mm):");
       if (backlash.has_any_measurement()) {
-        LOOP_XYZ(a) if (backlash.has_measurement(a)) {
-          SERIAL_CHAR(' ');
-          SERIAL_CHAR(axis_codes[a]);
-          SERIAL_ECHO(backlash.get_measurement(a));
+        LOOP_XYZ(a) if (axis_can_calibrate(a) && backlash.has_measurement(AxisEnum(a))) {
+          SERIAL_CHAR(' ', XYZ_CHAR(a));
+          SERIAL_ECHO(backlash.get_measurement(AxisEnum(a)));
         }
       }
       else
