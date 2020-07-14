@@ -743,7 +743,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
- #define DEFAULT_AXIS_STEPS_PER_UNIT   { 201, 205, 4000, 330} //Getunte config
+ #define DEFAULT_AXIS_STEPS_PER_UNIT   { 201, 205, 4000, 335} //Getunte config
                                                        //272 lt. rechnung
 
 /**
