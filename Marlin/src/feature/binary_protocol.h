@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -32,7 +32,7 @@
 inline bool bs_serial_data_available(const uint8_t index) {
   switch (index) {
     case 0: return MYSERIAL0.available();
-    #if NUM_SERIAL > 1
+    #if HAS_MULTI_SERIAL
       case 1: return MYSERIAL1.available();
     #endif
   }
@@ -42,7 +42,7 @@ inline bool bs_serial_data_available(const uint8_t index) {
 inline int bs_read_serial(const uint8_t index) {
   switch (index) {
     case 0: return MYSERIAL0.read();
-    #if NUM_SERIAL > 1
+    #if HAS_MULTI_SERIAL
       case 1: return MYSERIAL1.read();
     #endif
   }

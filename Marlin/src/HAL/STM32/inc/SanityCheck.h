@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -51,8 +51,6 @@
 
 #if ENABLED(SERIAL_STATS_MAX_RX_QUEUED)
   #error "SERIAL_STATS_MAX_RX_QUEUED is not supported on this platform."
-#endif
-
-#if ENABLED(SERIAL_STATS_DROPPED_RX)
+#elif ENABLED(SERIAL_STATS_DROPPED_RX)
   #error "SERIAL_STATS_DROPPED_RX is not supported on this platform."
-#endif  
+#endif
