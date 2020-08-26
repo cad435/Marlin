@@ -3190,10 +3190,11 @@
   //#define USER_SCRIPT_RETURN  // Return to status screen after a script
 
   #define USER_DESC_1 "Steps for normal E0"
-  #define USER_GCODE_1 "M92 T0 E" STRINGIFY(DEFAULT_AXIS_ESTEPS0_PER_UNIT_N) "\nM203 T0 E" STRINGIFY(DEFAULT_MAX_E1_FEEDRATE_N) "\nM201 T0 E" STRINGIFY(DEFAULT_MAX_E1_ACCELERATION_N)
-
+                      //Set steps/mm                                          //Set max Feedrate                                //Set max Acceleration                                //Set max Retract-Acceleration          //enable Steath-Job again
+  #define USER_GCODE_1 "M92 T0 E" STRINGIFY(DEFAULT_AXIS_ESTEPS0_PER_UNIT_N) "\nM203 T0 E" STRINGIFY(DEFAULT_MAX_E1_FEEDRATE_N) "\nM201 T0 E" STRINGIFY(DEFAULT_MAX_E1_ACCELERATION_N) "\nM204 R" STRINGIFY(DEFAULT_RETRACT_ACCELERATION) "\nM569 S1 T0 E"
+                                                                                                                                                                                                                              //disable Stealth-Job for TMC (otherwise high speeds are not possible)
   #define USER_DESC_2 "Steps for geared E0"
-  #define USER_GCODE_2 "M92 T0 E" STRINGIFY(DEFAULT_AXIS_ESTEPS0_PER_UNIT_G) "\nM203 T0 E" STRINGIFY(DEFAULT_MAX_E1_FEEDRATE_G) "\nM201 T0 E" STRINGIFY(DEFAULT_MAX_E1_ACCELERATION_G)
+  #define USER_GCODE_2 "M92 T0 E" STRINGIFY(DEFAULT_AXIS_ESTEPS0_PER_UNIT_G) "\nM203 T0 E" STRINGIFY(DEFAULT_MAX_E1_FEEDRATE_G) "\nM201 T0 E" STRINGIFY(DEFAULT_MAX_E1_ACCELERATION_G) "\nM204 R" STRINGIFY(DEFAULT_RETRACT_ACCELERATION_G) "\nM569 S0 T0 E"
 
   #define USER_DESC_3 "Bring Bed to front"
   #define USER_GCODE_3 "G1 Y" STRINGIFY(Y_MAX_POS) "F10000"

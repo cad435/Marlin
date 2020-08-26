@@ -762,7 +762,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 #define DEFAULT_MAX_E1_FEEDRATE_N 40 //used for Custom Command
-#define DEFAULT_MAX_E1_FEEDRATE_G 2 //used for Custom Command
+#define DEFAULT_MAX_E1_FEEDRATE_G 4 //used for Custom Command
 #define DEFAULT_MAX_FEEDRATE          { 150, 150, 12.5, DEFAULT_MAX_E1_FEEDRATE_N, DEFAULT_MAX_E1_FEEDRATE_N}
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -777,7 +777,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 #define DEFAULT_MAX_E1_ACCELERATION_N 500
-#define DEFAULT_MAX_E1_ACCELERATION_G 10
+#define DEFAULT_MAX_E1_ACCELERATION_G 30
 #define DEFAULT_MAX_ACCELERATION      { 500, 500, DEFAULT_MAX_E1_ACCELERATION_N, DEFAULT_MAX_E1_ACCELERATION_N}
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
@@ -795,6 +795,7 @@
  */
 #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
+#define DEFAULT_RETRACT_ACCELERATION_G DEFAULT_MAX_E1_ACCELERATION_G
 #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
