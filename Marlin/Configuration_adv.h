@@ -2097,7 +2097,7 @@
  * https://github.com/trinamic/TMC26XStepper
  */
 
-#define TMC_DRIVER_CURRENT_USER 750
+#define TMC_DRIVER_CURRENT_USER 800
 #define TMC_DRIVER_CURRENT_E_USER 700
 
 #if HAS_DRIVER(TMC26X)
