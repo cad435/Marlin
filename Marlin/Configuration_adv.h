@@ -2097,25 +2097,26 @@
  * https://github.com/trinamic/TMC26XStepper
  */
 
-#define TMC_DRIVER_CURRENT_USER 800
+#define TMC_DRIVER_CURRENT_U_X 850
+#define TMC_DRIVER_CURRENT_U_Y 700
 #define TMC_DRIVER_CURRENT_E_USER 700
 
 #if HAS_DRIVER(TMC26X)
 
   #if AXIS_DRIVER_TYPE_X(TMC26X)
-    #define X_MAX_CURRENT     TMC_DRIVER_CURRENT_USER  // (mA)
+    #define X_MAX_CURRENT     TMC_DRIVER_CURRENT_U_X  // (mA)
     #define X_SENSE_RESISTOR    91  // (mOhms)
     #define X_MICROSTEPS        32  // Number of microsteps
   #endif
 
   #if AXIS_DRIVER_TYPE_X2(TMC26X)
-    #define X2_MAX_CURRENT    TMC_DRIVER_CURRENT_USER
+    #define X2_MAX_CURRENT    TMC_DRIVER_CURRENT_U_X
     #define X2_SENSE_RESISTOR   91
     #define X2_MICROSTEPS       32
   #endif
 
   #if AXIS_DRIVER_TYPE_Y(TMC26X)
-    #define Y_MAX_CURRENT     TMC_DRIVER_CURRENT_USER
+    #define Y_MAX_CURRENT     TMC_DRIVER_CURRENT_U_Y
     #define Y_SENSE_RESISTOR    91
     #define Y_MICROSTEPS        32
   #endif
@@ -2163,7 +2164,7 @@
   #endif
 
   #if AXIS_DRIVER_TYPE_E2(TMC26X)
-    #define E2_MAX_CURRENT    TMC_DRIVER_CURRENT_USER
+    #define E2_MAX_CURRENT    TMC_DRIVER_CURRENT_E_USER
     #define E2_SENSE_RESISTOR   91
     #define E2_MICROSTEPS       32
   #endif
@@ -2224,7 +2225,7 @@
   #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       TMC_DRIVER_CURRENT_USER        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       TMC_DRIVER_CURRENT_U_X        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     32    // 0..256
     #define X_RSENSE          0.11
@@ -2232,7 +2233,7 @@
   #endif
 
   #if AXIS_IS_TMC(X2)
-    #define X2_CURRENT      TMC_DRIVER_CURRENT_USER
+    #define X2_CURRENT      TMC_DRIVER_CURRENT_U_X
     #define X2_CURRENT_HOME X2_CURRENT
     #define X2_MICROSTEPS    32
     #define X2_RSENSE         0.11
@@ -2240,7 +2241,7 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       TMC_DRIVER_CURRENT_USER
+    #define Y_CURRENT       TMC_DRIVER_CURRENT_U_Y
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     32
     #define Y_RSENSE          0.11
@@ -2302,7 +2303,7 @@
   #endif
 
   #if AXIS_IS_TMC(E2)
-    #define E2_CURRENT      TMC_DRIVER_CURRENT_USER
+    #define E2_CURRENT      TMC_DRIVER_CURRENT_E_USER
     #define E2_MICROSTEPS    32
     #define E2_RSENSE         0.11
     #define E2_CHAIN_POS     -1
