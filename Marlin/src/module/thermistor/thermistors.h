@@ -189,6 +189,9 @@ typedef struct { int16_t value, celsius; } temp_entry_t;
 #if ANY_THERMISTOR_IS(1000) // Custom
   const temp_entry_t temptable_1000[] PROGMEM = { { 0, 0 } };
 #endif
+#if ANY_THERMISTOR_IS(1001) // Custom for GTM32 PRO VB, 100k, 4.7k Pullup to 3.3V
+  #include "thermistor_1001.h"
+#endif
 
 #define _TT_NAME(_N) temptable_ ## _N
 #define TT_NAME(_N) _TT_NAME(_N)
