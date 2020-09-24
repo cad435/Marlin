@@ -552,12 +552,10 @@
   #error "SERIAL_XON_XOFF and SERIAL_STATS_* features not supported on USB-native AVR devices."
 #endif
 
-#if SERIAL_PORT > 7
-  #error "Set SERIAL_PORT to the port on your board. Usually this is 0."
-#endif
-
-#if defined(SERIAL_PORT_2) && NUM_SERIAL < 2
-  #error "SERIAL_PORT_2 is not supported for your MOTHERBOARD. Disable it to continue."
+#ifndef SERIAL_PORT
+  #error "SERIAL_PORT must be defined in Configuration.h"
+#elif defined(SERIAL_PORT_2) && SERIAL_PORT_2 == SERIAL_PORT
+  #error "SERIAL_PORT_2 cannot be the same as SERIAL_PORT. Please update your configuration."
 #endif
 
 /**
@@ -662,8 +660,8 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   #elif PROGRESS_MSG_EXPIRE < 0
     #error "PROGRESS_MSG_EXPIRE must be greater than or equal to 0."
   #endif
-#elif ENABLED(LCD_SET_PROGRESS_MANUALLY) && NONE(HAS_GRAPHICAL_LCD, EXTENSIBLE_UI)
-  #error "LCD_SET_PROGRESS_MANUALLY requires LCD_PROGRESS_BAR, Graphical LCD, or EXTENSIBLE_UI."
+#elif ENABLED(LCD_SET_PROGRESS_MANUALLY) && NONE(HAS_GRAPHICAL_LCD, HAS_GRAPHICAL_TFT, HAS_CHARACTER_LCD, EXTENSIBLE_UI)
+  #error "LCD_SET_PROGRESS_MANUALLY requires LCD_PROGRESS_BAR, Character LCD, Graphical LCD, TFT, or EXTENSIBLE_UI."
 #endif
 
 #if !HAS_LCD_MENU && ENABLED(SD_REPRINT_LAST_SELECTED_FILE)
@@ -822,7 +820,7 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
 /**
  * Options only for EXTRUDERS > 1
  */
-#if EXTRUDERS > 1
+#if HAS_MULTI_EXTRUDER
 
   #if EXTRUDERS > 8
     #error "Marlin supports a maximum of 8 EXTRUDERS."
@@ -944,7 +942,7 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
  * Mixing Extruder requirements
  */
 #if ENABLED(MIXING_EXTRUDER)
-  #if EXTRUDERS > 1
+  #if HAS_MULTI_EXTRUDER
     #error "For MIXING_EXTRUDER set MIXING_STEPPERS > 1 instead of EXTRUDERS > 1."
   #elif MIXING_STEPPERS < 2
     #error "You must set MIXING_STEPPERS >= 2 for a mixing extruder."
@@ -2136,6 +2134,36 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 #endif
 
 /**
+ * Serial displays require a dedicated serial port
+ */
+#if HAS_DGUS_LCD
+  #ifndef DGUS_SERIAL_PORT
+    #error "The DGUS LCD requires DGUS_SERIAL_PORT to be defined in Configuration.h"
+  #elif DGUS_SERIAL_PORT == SERIAL_PORT
+    #error "DGUS_SERIAL_PORT cannot be the same as SERIAL_PORT. Please update your configuration."
+  #elif defined(SERIAL_PORT_2) && DGUS_SERIAL_PORT == SERIAL_PORT_2
+    #error "DGUS_SERIAL_PORT cannot be the same as SERIAL_PORT_2. Please update your configuration."
+  #endif
+#elif ENABLED(MALYAN_LCD)
+  #ifndef LCD_SERIAL_PORT
+    #error "MALYAN_LCD requires LCD_SERIAL_PORT to be defined in Configuration.h"
+  #elif LCD_SERIAL_PORT == SERIAL_PORT
+    #error "LCD_SERIAL_PORT cannot be the same as SERIAL_PORT. Please update your configuration."
+  #elif defined(SERIAL_PORT_2) && LCD_SERIAL_PORT == SERIAL_PORT_2
+    #error "LCD_SERIAL_PORT cannot be the same as SERIAL_PORT_2. Please update your configuration."
+  #endif
+#elif EITHER(ANYCUBIC_LCD_I3MEGA, ANYCUBIC_LCD_CHIRON)
+  #ifndef ANYCUBIC_LCD_SERIAL_PORT
+    #error "The ANYCUBIC LCD requires ANYCUBIC_LCD_SERIAL_PORT to be defined in Configuration.h"
+  #elif ANYCUBIC_LCD_SERIAL_PORT == SERIAL_PORT
+    #error "ANYCUBIC_LCD_SERIAL_PORT cannot be the same as SERIAL_PORT. Please update your configuration."
+  #elif defined(SERIAL_PORT_2) && ANYCUBIC_LCD_SERIAL_PORT == SERIAL_PORT_2
+    #error "ANYCUBIC_LCD_SERIAL_PORT cannot be the same as SERIAL_PORT_2. Please update your configuration."
+  #endif
+  #define ANYCUBIC_LCD_SERIAL anycubicLcdSerial
+#endif
+
+/**
  * FYSETC Mini 12864 RGB backlighting required
  */
 #if EITHER(FYSETC_MINI_12864_1_2, FYSETC_MINI_12864_2_0) && DISABLED(RGB_LED)
@@ -2902,8 +2930,6 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
 #if !HAS_GRAPHICAL_LCD
   #if ENABLED(PRINT_PROGRESS_SHOW_DECIMALS)
     #error "PRINT_PROGRESS_SHOW_DECIMALS currently requires a Graphical LCD."
-  #elif ENABLED(SHOW_REMAINING_TIME)
-    #error "SHOW_REMAINING_TIME currently requires a Graphical LCD."
   #endif
 #endif
 

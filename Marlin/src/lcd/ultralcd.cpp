@@ -655,7 +655,7 @@ void MarlinUI::quick_feedback(const bool clear_buttons/*=true*/) {
       const feedRate_t fr_mm_s = manual_feedrate_mm_s[manual_move_axis];
       #if IS_KINEMATIC
 
-        #if EXTRUDERS > 1
+        #if HAS_MULTI_EXTRUDER
           const int8_t old_extruder = active_extruder;
           if (manual_move_axis == E_AXIS) active_extruder = manual_move_e_index;
         #endif
@@ -676,9 +676,7 @@ void MarlinUI::quick_feedback(const bool clear_buttons/*=true*/) {
         prepare_internal_move_to_destination(fr_mm_s);  // will set current_position from destination
         processing_manual_move = false;
 
-        #if EXTRUDERS > 1
-          active_extruder = old_extruder;
-        #endif
+        TERN_(HAS_MULTI_EXTRUDER, active_extruder = old_extruder);
 
       #else
 

@@ -61,6 +61,9 @@ void host_action(const char * const pstr, const bool eol) {
 #ifdef ACTION_ON_CANCEL
   void host_action_cancel() { host_action(PSTR(ACTION_ON_CANCEL)); }
 #endif
+#ifdef ACTION_ON_START
+  void host_action_start() { host_action(PSTR(ACTION_ON_START)); }
+#endif
 
 #if ENABLED(HOST_PROMPT_SUPPORT)
 
