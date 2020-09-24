@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -43,9 +43,7 @@
   #define SD_DETECT_PIN                       49  // Always define onboard SD detect
 #endif
 
-#ifndef PS_ON_PIN
-  #define PS_ON_PIN                           40  // Used by CR2020 Industrial series
-#endif
+#define PS_ON_PIN                             40  // Used by CR2020 Industrial series
 
 #if ENABLED(CASE_LIGHT_ENABLE) && !defined(CASE_LIGHT_PIN)
   #define CASE_LIGHT_PIN                      65
@@ -63,6 +61,4 @@
 #define EXP4_PIN                              12  // PS_ON_PIN
 
 #define SUICIDE_PIN                           12  // Used by CR2020 Industrial series
-#ifndef SUICIDE_PIN_INVERTING
-  #define SUICIDE_PIN_INVERTING             true
-#endif
+#define SUICIDE_PIN_INVERTING true                // Used by CR2020 Industrial series

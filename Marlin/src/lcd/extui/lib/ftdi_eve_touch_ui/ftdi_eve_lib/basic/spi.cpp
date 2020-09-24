@@ -17,7 +17,7 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                              *
+ *   location: <http://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "ftdi_basic.h"
@@ -29,13 +29,10 @@
 namespace FTDI {
 
   #ifndef CLCD_USE_SOFT_SPI
-    #ifdef CLCD_SPI_BUS
+    #ifndef __AVR__
       SPIClass EVE_SPI(CLCD_SPI_BUS);
     #endif
-    #ifndef CLCD_HW_SPI_SPEED
-      #define CLCD_HW_SPI_SPEED 8000000 >> SPI_SPEED
-    #endif
-    SPISettings SPI::spi_settings(CLCD_HW_SPI_SPEED, MSBFIRST, SPI_MODE0);
+    SPISettings SPI::spi_settings(SPI_FREQUENCY, MSBFIRST, SPI_MODE0);
   #endif
 
   void SPI::spi_init() {

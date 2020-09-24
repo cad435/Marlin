@@ -16,7 +16,7 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                              *
+ *   location: <http://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "../config.h"
@@ -88,15 +88,7 @@ void BedMeshScreen::drawMesh(int16_t x, int16_t y, int16_t w, int16_t h, ExtUI::
 
   const float scale_z = ((val_max == val_min) ? 1 : 1/(val_max - val_min)) * autoscale_max;
 
-  /**
-   * The 3D points go through a 3D graphics pipeline to determine the final 2D point on the screen.
-   * This is written out as a stack of macros that each apply an affine transformation to the point.
-   * At compile time, the compiler should be able to reduce these expressions.
-   *
-   * The last transformation in the chain (TRANSFORM_5) is initially set to a no-op so we can measure
-   * the dimensions of the grid, but is later replaced with a scaling transform that scales the grid
-   * to fit.
-   */
+  // These equations determine the appearance of the grid on the screen.
 
   #define TRANSFORM_5(X,Y,Z)  (X), (Y)                                                                   // No transform
   #define TRANSFORM_4(X,Y,Z)  TRANSFORM_5((X)/(Z),(Y)/-(Z), 0)                                           // Perspective
@@ -127,12 +119,8 @@ void BedMeshScreen::drawMesh(int16_t x, int16_t y, int16_t w, int16_t h, ExtUI::
   const float center_x         = x + w/2;
   const float center_y         = y + h/2;
 
-  // Now replace the last transformation in the chain with a scaling operation.
-
   #undef  TRANSFORM_5
-  #define TRANSFORM_6(X,Y,Z)  (X)*16, (Y)*16                                                  // Scale to 1/16 pixel units
-  #define TRANSFORM_5(X,Y,Z)  TRANSFORM_6( center_x + ((X) - grid_cx) * scale_x, \
-                                           center_y + ((Y) - grid_cy) * scale_y, 0)           // Scale to bounds
+  #define TRANSFORM_5(X,Y,Z)  center_x + (X - grid_cx) * scale_x, center_y + (Y - grid_cy) * scale_y      // Fit to bounds
 
   // Draw the grid
 
@@ -140,6 +128,7 @@ void BedMeshScreen::drawMesh(int16_t x, int16_t y, int16_t w, int16_t h, ExtUI::
 
   CommandProcessor cmd;
   cmd.cmd(SAVE_CONTEXT())
+     .cmd(VERTEX_FORMAT(0))
      .cmd(TAG_MASK(false))
      .cmd(SAVE_CONTEXT());
 
@@ -222,8 +211,7 @@ bool BedMeshScreen::tagToPoint(uint8_t tag, uint8_t &x, uint8_t &y) {
 
 void BedMeshScreen::onEntry() {
   screen_data.BedMeshScreen.highlightedTag = 0;
-  screen_data.BedMeshScreen.count = GRID_MAX_POINTS;
-  screen_data.BedMeshScreen.showMappingDone = false;
+  screen_data.BedMeshScreen.count = 0;
   BaseScreen::onEntry();
 }
 
@@ -252,10 +240,6 @@ void BedMeshScreen::drawHighlightedPointValue() {
      .colors(action_btn)
      .tag(1).button( OKAY_POS, GET_TEXT_F(MSG_BUTTON_OKAY))
      .tag(0);
-
-  if (screen_data.BedMeshScreen.showMappingDone) {
-    cmd.text(MESSAGE_POS, GET_TEXT_F(MSG_BED_MAPPING_DONE));
-  }
 }
 
 void BedMeshScreen::onRedraw(draw_mode_t what) {
@@ -275,13 +259,17 @@ void BedMeshScreen::onRedraw(draw_mode_t what) {
 
   if (what & FOREGROUND) {
     constexpr float autoscale_max_amplitude = 0.03;
-    const bool gotAllPoints = screen_data.BedMeshScreen.count >= GRID_MAX_POINTS;
-    if (gotAllPoints) {
-      drawHighlightedPointValue();
-    }
+    const bool levelingFinished = screen_data.BedMeshScreen.count >= GRID_MAX_POINTS;
     const float levelingProgress = sq(float(screen_data.BedMeshScreen.count) / GRID_MAX_POINTS);
+    if (levelingFinished) {
+      drawHighlightedPointValue();
+      CommandProcessor cmd;
+      cmd.font(Theme::font_medium)
+         .text(MESSAGE_POS, GET_TEXT_F(MSG_BED_MAPPING_DONE));
+    }
+
     BedMeshScreen::drawMesh(INSET_POS(MESH_POS), ExtUI::getMeshArray(),
-      USE_POINTS | USE_HIGHLIGHT | USE_AUTOSCALE | (gotAllPoints ? USE_COLORS : 0),
+      USE_POINTS | USE_HIGHLIGHT | USE_AUTOSCALE | (levelingFinished ? USE_COLORS : 0),
       autoscale_max_amplitude * levelingProgress
     );
   }
@@ -308,29 +296,11 @@ void BedMeshScreen::onMeshUpdate(const int8_t, const int8_t, const float) {
 }
 
 void BedMeshScreen::onMeshUpdate(const int8_t x, const int8_t y, const ExtUI::probe_state_t state) {
-  switch(state) {
-    case ExtUI::MESH_START:
-      screen_data.BedMeshScreen.count = 0;
-      screen_data.BedMeshScreen.showMappingDone = false;
-      break;
-    case ExtUI::MESH_FINISH:
-      screen_data.BedMeshScreen.count = GRID_MAX_POINTS;
-      screen_data.BedMeshScreen.showMappingDone = true;
-      break;
-    case ExtUI::PROBE_START:
-      screen_data.BedMeshScreen.highlightedTag = pointToTag(x, y);
-      break;
-    case ExtUI::PROBE_FINISH:
-      screen_data.BedMeshScreen.count++;
-      break;
+  if (state == ExtUI::PROBE_FINISH) {
+    screen_data.BedMeshScreen.highlightedTag = pointToTag(x, y);
+    screen_data.BedMeshScreen.count++;
   }
   BedMeshScreen::onMeshUpdate(x, y, 0);
-}
-
-void BedMeshScreen::startMeshProbe() {
-  GOTO_SCREEN(BedMeshScreen);
-  screen_data.BedMeshScreen.count = 0;
-  injectCommands_P(PSTR(BED_LEVELING_COMMANDS));
 }
 
 #endif // TOUCH_UI_FTDI_EVE && HAS_MESH

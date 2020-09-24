@@ -17,7 +17,7 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                              *
+ *   location: <http://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "../compat.h"
@@ -497,8 +497,7 @@ bool UIFlashStorage::is_present = false;
       if (verifyOk) {
         SERIAL_ECHOLNPGM("DONE");
         return SUCCESS;
-      }
-      else {
+      } else {
         SERIAL_ECHOLNPGM("FAIL");
         return VERIFY_ERROR;
       }

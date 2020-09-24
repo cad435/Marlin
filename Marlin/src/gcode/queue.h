@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -35,8 +35,7 @@ public:
    * commands to Marlin, and lines will be checked for sequentiality.
    * M110 N<int> sets the current line number.
    */
-
-  static long last_N[NUM_SERIAL];
+  static long last_N;
 
   /**
    * GCode Command Queue
@@ -52,16 +51,12 @@ public:
 
   static char command_buffer[BUFSIZE][MAX_CMD_SIZE];
 
-  /**
+  /*
    * The port that the command was received on
    */
-  #if HAS_MULTI_SERIAL
+  #if NUM_SERIAL > 1
     static int16_t port[BUFSIZE];
   #endif
-
-  static int16_t command_port() {
-    return TERN0(HAS_MULTI_SERIAL, port[index_r]);
-  }
 
   GCodeQueue();
 
@@ -158,13 +153,13 @@ private:
   #endif
 
   static void _commit_command(bool say_ok
-    #if HAS_MULTI_SERIAL
+    #if NUM_SERIAL > 1
       , int16_t p=-1
     #endif
   );
 
   static bool _enqueue(const char* cmd, bool say_ok=false
-    #if HAS_MULTI_SERIAL
+    #if NUM_SERIAL > 1
       , int16_t p=-1
     #endif
   );

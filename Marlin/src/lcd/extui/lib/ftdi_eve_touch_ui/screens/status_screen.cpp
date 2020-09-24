@@ -17,7 +17,7 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                              *
+ *   location: <http://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "../config.h"
@@ -97,7 +97,7 @@ void StatusScreen::draw_axis_position(draw_mode_t what) {
       strcpy_P(y_str, PSTR("?"));
 
     if (isAxisPositionKnown(Z))
-      format_position(z_str, getAxisPosition_mm(Z), 2);
+      format_position(z_str, getAxisPosition_mm(Z));
     else
       strcpy_P(z_str, PSTR("?"));
 
@@ -376,14 +376,11 @@ bool StatusScreen::onTouchEnd(uint8_t tag) {
   using namespace ExtUI;
 
   switch (tag) {
-    #if ENABLED(SDSUPPORT)
-      case 3: GOTO_SCREEN(FilesScreen); break;
-    #endif
+    case 3: GOTO_SCREEN(FilesScreen); break;
     case 4:
       if (isPrinting()) {
         GOTO_SCREEN(TuneMenu);
-      }
-      else {
+      } else {
         GOTO_SCREEN(MainMenu);
       }
       break;
@@ -397,8 +394,7 @@ bool StatusScreen::onTouchEnd(uint8_t tag) {
         #else
           return false;
         #endif
-      }
-      else {
+      } else {
         GOTO_SCREEN(MoveAxisScreen);
       }
       break;

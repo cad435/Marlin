@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -49,12 +49,12 @@
 //#define DISABLE_JTAGSWD
 
 // Ignore temp readings during development.
-//#define BOGUS_TEMPERATURE_GRACE_PERIOD    2000
+//#define BOGUS_TEMPERATURE_GRACE_PERIOD 2000
 
 // Enable EEPROM Emulation for this board as it doesn't have EEPROM
 #if EITHER(NO_EEPROM_SELECTED, FLASH_EEPROM_EMULATION)
   #define FLASH_EEPROM_EMULATION
-  #define MARLIN_EEPROM_SIZE              0x1000  // 4KB
+  #define E2END 0xFFF                             // 4KB
 #endif
 
 //
@@ -101,36 +101,33 @@
 #define E2_ENABLE_PIN                       PC4
 
 //
-// Heaters / Fans
+// Heaters / Fans - INFO: Extruders ports are in reverse order. Pin numbers here differ from schematic. Original firmware assumes heater, fan and temp sensor on port EXT0 PB0, PB9, PC2. 
 //
-#define HEATER_0_PIN                        PB0   // EXT0 port
-#define HEATER_1_PIN                        PB5   // EXT1 port
-#define HEATER_2_PIN                        PB4   // EXT2 port
-#define HEATER_BED_PIN                      PB1   // CON2X3 hotbed port
+#define HEATER_0_PIN       PB0   // EXT0 port. 
+//#define HEATER_1_PIN       PB5   // EXT1 port
+//#define HEATER_2_PIN       PB4   // EXT2 port
+#define HEATER_BED_PIN     PB1   // CON2X3 hotbed port
 
 //
 // These are FAN PWM pins on EXT0..EXT2 connectors.
 //
-//#define FAN_PIN                           PB9   // EXT0 port
-#define FAN1_PIN                            PB8   // EXT1 port
-#define FAN2_PIN                            PB7   // EXT2 port
-
-#ifndef E0_AUTO_FAN_PIN
-  #define E0_AUTO_FAN_PIN                   PB9   // EXT0 port, used as main extruder fan
-#endif
+#define FAN_PIN            PB9   // EXT0 port
+//#define FAN1_PIN           PB8   // EXT1 port
+//#define FAN2_PIN           PB7   // EXT2 port
+//#define ORIG_E0_AUTO_FAN_PIN  PB9  // EXT0 port, used as main extruder fan
 
 //
 // Temperature Sensors
 //
-#define TEMP_0_PIN                          PC2   // EXT0 port
-#define TEMP_1_PIN                          PC1   // EXT1 port
-#define TEMP_2_PIN                          PC0   // EXT2 port
-#define TEMP_BED_PIN                        PC3   // CON2X3 hotbed port
+#define TEMP_0_PIN         PC0   // EXT2 port
+#define TEMP_1_PIN         PC1   // EXT1 port
+#define TEMP_2_PIN         PC2   // EXT0 port
+#define TEMP_BED_PIN       PC3   // CON2X3 hotbed port
 
 //
 // Misc. Functions
 //
-#define LED_PWM                             PD12  // External LED, pin 2 on LED labeled connector
+#define LED_PWM            PD12   // External LED, pin 2 on LED labeled connector
 
 //
 // LCD / Controller
@@ -159,15 +156,9 @@
   #endif
 
   #if HAS_GRAPHICAL_LCD
-    #ifndef BOARD_ST7920_DELAY_1
-      #define BOARD_ST7920_DELAY_1 DELAY_NS(96)
-    #endif
-    #ifndef BOARD_ST7920_DELAY_2
-      #define BOARD_ST7920_DELAY_2 DELAY_NS(48)
-    #endif
-    #ifndef BOARD_ST7920_DELAY_3
-      #define BOARD_ST7920_DELAY_3 DELAY_NS(715)
-    #endif
+    #define BOARD_ST7920_DELAY_1 DELAY_NS(96)
+    #define BOARD_ST7920_DELAY_2 DELAY_NS(48)
+    #define BOARD_ST7920_DELAY_3 DELAY_NS(715)
   #endif
 
 #endif // HAS_SPI_LCD
@@ -236,6 +227,6 @@
 // ESP WiFi can be soldered to J9 connector which is wired to USART2.
 // Must define WIFISUPPORT in Configuration.h for the printer.
 //
-#define ESP_WIFI_MODULE_COM                    2
-#define ESP_WIFI_MODULE_BAUDRATE          115200
+#define ESP_WIFI_MODULE_COM 2
+#define ESP_WIFI_MODULE_BAUDRATE 115200
 #define ESP_WIFI_MODULE_RESET_PIN           -1

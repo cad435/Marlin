@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -27,18 +27,21 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if ENABLED(I2C_EEPROM)
+#if BOTH(USE_SHARED_EEPROM, I2C_EEPROM)
 
-#include "eeprom_if.h"
+#include "../HAL.h"
 #include <Wire.h>
 
-void eeprom_init() { Wire.begin(); }
-
-#if ENABLED(USE_SHARED_EEPROM)
+#include "eeprom_if.h"
 
 #ifndef EEPROM_WRITE_DELAY
   #define EEPROM_WRITE_DELAY    5
 #endif
+
+// ------------------------
+// Private Variables
+// ------------------------
+
 #ifndef EEPROM_DEVICE_ADDRESS
   #define EEPROM_DEVICE_ADDRESS  0x50
 #endif
@@ -48,6 +51,8 @@ static constexpr uint8_t eeprom_device_address = I2C_ADDRESS(EEPROM_DEVICE_ADDRE
 // ------------------------
 // Public functions
 // ------------------------
+
+static void eeprom_init() { Wire.begin(); }
 
 void eeprom_write_byte(uint8_t *pos, unsigned char value) {
   const unsigned eeprom_address = (unsigned)pos;
@@ -63,6 +68,37 @@ void eeprom_write_byte(uint8_t *pos, unsigned char value) {
   delay(EEPROM_WRITE_DELAY);
 }
 
+// WARNING: address is a page address, 6-bit end will wrap around
+// also, data can be maximum of about 30 bytes, because the Wire library has a buffer of 32 bytes
+void eeprom_update_block(const void *pos, void *__dst, size_t n) {
+  const unsigned eeprom_address = (unsigned)__dst;
+
+  eeprom_init();
+
+  Wire.beginTransmission(eeprom_device_address);
+  Wire.write(int(eeprom_address >> 8));   // MSB
+  Wire.write(int(eeprom_address & 0xFF)); // LSB
+  Wire.endTransmission();
+
+  uint8_t *ptr = (uint8_t*)pos;
+  uint8_t flag = 0;
+  Wire.requestFrom(eeprom_device_address, (byte)n);
+  for (byte c = 0; c < n && Wire.available(); c++)
+    flag |= Wire.read() ^ ptr[c];
+
+  if (flag) {
+    Wire.beginTransmission(eeprom_device_address);
+    Wire.write(int(eeprom_address >> 8));   // MSB
+    Wire.write(int(eeprom_address & 0xFF)); // LSB
+    Wire.write((uint8_t*)pos, n);
+    Wire.endTransmission();
+
+    // wait for write cycle to complete
+    // this could be done more efficiently with "acknowledge polling"
+    delay(EEPROM_WRITE_DELAY);
+  }
+}
+
 uint8_t eeprom_read_byte(uint8_t *pos) {
   const unsigned eeprom_address = (unsigned)pos;
 
@@ -74,5 +110,19 @@ uint8_t eeprom_read_byte(uint8_t *pos) {
   return Wire.available() ? Wire.read() : 0xFF;
 }
 
-#endif // USE_SHARED_EEPROM
-#endif // I2C_EEPROM
+// Don't read more than 30..32 bytes at a time!
+void eeprom_read_block(void* pos, const void *__dst, size_t n) {
+  const unsigned eeprom_address = (unsigned)__dst;
+
+  eeprom_init();
+
+  Wire.beginTransmission(eeprom_device_address);
+  Wire.write(int(eeprom_address >> 8));   // MSB
+  Wire.write(int(eeprom_address & 0xFF)); // LSB
+  Wire.endTransmission();
+  Wire.requestFrom(eeprom_device_address, (byte)n);
+  for (byte c = 0; c < n; c++ )
+    if (Wire.available()) *((uint8_t*)pos + c) = Wire.read();
+}
+
+#endif // USE_SHARED_EEPROM && I2C_EEPROM
