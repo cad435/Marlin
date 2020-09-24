@@ -328,8 +328,22 @@ class MenuItem_bool : public MenuEditItemBase {
   NEXT_ITEM();                               \
 }while(0)
 
-#define STATIC_ITEM(LABEL,      V...)                  STATIC_ITEM_P(GET_TEXT(LABEL), ##V)
-#define STATIC_ITEM_N(LABEL, N, V...)                STATIC_ITEM_N_P(GET_TEXT(LABEL), ##V)
+// PSTRING_ITEM is like STATIC_ITEM but it takes
+// two PSTRs with the style as the last parameter.
+
+#define PSTRING_ITEM_P(PLABEL, PVAL, STYL) do{ \
+  constexpr int m = 20;                        \
+  char msg[m+1];                               \
+  msg[0] = ':'; msg[1] = ' ';                  \
+  strncpy_P(msg+2, PSTR(PVAL), m-2);           \
+  if (msg[m-1] & 0x80) msg[m-1] = '\0';        \
+  STATIC_ITEM_P(PLABEL, STYL, msg);            \
+}while(0)
+
+#define PSTRING_ITEM(LABEL, V...)                     PSTRING_ITEM_P(GET_TEXT(LABEL), ##V)
+
+#define STATIC_ITEM(LABEL, V...)                       STATIC_ITEM_P(GET_TEXT(LABEL), ##V)
+#define STATIC_ITEM_N(LABEL, N, V...)                STATIC_ITEM_N_P(GET_TEXT(LABEL), N, ##V)
 
 #define MENU_ITEM_N_S_P(TYPE, N, S, PLABEL, V...)   _MENU_ITEM_N_S_P(TYPE, N, S, false, PLABEL, ##V)
 #define MENU_ITEM_N_S(TYPE, N, S, LABEL, V...)       MENU_ITEM_N_S_P(TYPE, N, S, GET_TEXT(LABEL), ##V)
