@@ -35,7 +35,8 @@
 
   // MYSERIAL0 required before MarlinSerial includes!
 
-  #define _MSERIAL(X) Serial##X
+  #define __MSERIAL(X) Serial##X
+  #define _MSERIAL(X) __MSERIAL(X)
   #define MSERIAL(X) _MSERIAL(INCREMENT(X))
 
   #if SERIAL_PORT == -1
@@ -56,13 +57,13 @@
     #endif
   #endif
 
-  #ifdef DGUS_SERIAL_PORT
-    #if DGUS_SERIAL_PORT == -1
-      #define DGUS_SERIAL Serial
-    #elif WITHIN(DGUS_SERIAL_PORT, 0, 3)
-      #define MYSERIAL0 MSERIAL(DGUS_SERIAL_PORT)
+  #ifdef LCD_SERIAL_PORT
+    #if LCD_SERIAL_PORT == -1
+      #define LCD_SERIAL Serial
+    #elif WITHIN(LCD_SERIAL_PORT, 0, 3)
+      #define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
     #else
-      #error "DGUS_SERIAL_PORT must be from -1 to 3. Please update your configuration."
+      #error "LCD_SERIAL_PORT must be from -1 to 3. Please update your configuration."
     #endif
   #endif
 
@@ -87,6 +88,8 @@ typedef int8_t pin_t;
 
 void HAL_clear_reset_source();  // clear reset reason
 uint8_t HAL_get_reset_source(); // get reset reason
+
+inline void HAL_reboot() {}  // reboot the board or restart the bootloader
 
 //
 // ADC
@@ -132,10 +135,16 @@ void HAL_idletask();
 //
 FORCE_INLINE void _delay_ms(const int delay_ms) { delay(delay_ms); }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#if GCC_VERSION <= 50000
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+
 int freeMemory();
-#pragma GCC diagnostic pop
+
+#if GCC_VERSION <= 50000
+  #pragma GCC diagnostic pop
+#endif
 
 #ifdef __cplusplus
   extern "C" {
