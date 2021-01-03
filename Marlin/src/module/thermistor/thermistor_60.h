@@ -32,8 +32,6 @@
 // min adc: 1 at 0.0048828125 V
 // max adc: 1023 at 4.9951171875 V
 const temp_entry_t temptable_60[] PROGMEM = {
-  { OV(  31), 340 },
-  { OV(  41), 295 },
   { OV(  51), 272 },
   { OV(  61), 258 },
   { OV(  71), 247 },
