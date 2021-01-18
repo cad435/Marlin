@@ -242,6 +242,11 @@
   #endif
 #endif
 
+
+//redefine, because I wired it to the wrong port...
+#define HEATER_0_PIN  RAMPS_D9_PIN
+#define FAN_PIN       RAMPS_D10_PIN
+
 //
 // Misc. Functions
 //
