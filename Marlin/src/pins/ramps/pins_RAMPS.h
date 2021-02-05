@@ -85,9 +85,13 @@
 //
 // Limit Switches
 //
+
+//Redefined, so that Z_MIN endstop uses X_MIN pin on the Board, to free up UART1 (Pin18/19)
+
 #ifndef X_STOP_PIN
   #ifndef X_MIN_PIN
-    #define X_MIN_PIN                          3
+    //#define X_MIN_PIN                          3
+    #define X_MIN_PIN                          -1
   #endif
   #ifndef X_MAX_PIN
     #define X_MAX_PIN                          2
@@ -103,10 +107,12 @@
 #endif
 #ifndef Z_STOP_PIN
   #ifndef Z_MIN_PIN
-    #define Z_MIN_PIN                         18
+    #define Z_MIN_PIN                         3
+    //#define Z_MIN_PIN                         18
   #endif
   #ifndef Z_MAX_PIN
-    #define Z_MAX_PIN                         19
+    //#define Z_MAX_PIN                         19
+    #define Z_MAX_PIN                         -1
   #endif
 #endif
 
@@ -210,7 +216,14 @@
   #define RAMPS_D10_PIN                       10
 #endif
 
-#define HEATER_0_PIN               RAMPS_D10_PIN
+
+
+//redefine, because I wired it to the wrong port...
+//#define HEATER_0_PIN  RAMPS_D9_PIN
+//#define FAN_PIN       RAMPS_D10_PIN
+
+
+#define HEATER_0_PIN               RAMPS_D9_PIN
 
 #if ENABLED(IS_RAMPS_EFB)                         // Hotend, Fan, Bed
   #define HEATER_BED_PIN            RAMPS_D8_PIN
@@ -232,7 +245,7 @@
 
 #ifndef FAN_PIN
   #if EITHER(IS_RAMPS_EFB, IS_RAMPS_EFF)          // Hotend, Fan, Bed or Hotend, Fan, Fan
-    #define FAN_PIN                 RAMPS_D9_PIN
+    #define FAN_PIN                 RAMPS_D10_PIN
   #elif EITHER(IS_RAMPS_EEF, IS_RAMPS_SF)         // Hotend, Hotend, Fan or Spindle, Fan
     #define FAN_PIN                 RAMPS_D8_PIN
   #elif ENABLED(IS_RAMPS_EEB)                     // Hotend, Hotend, Bed
@@ -242,10 +255,6 @@
   #endif
 #endif
 
-
-//redefine, because I wired it to the wrong port...
-#define HEATER_0_PIN  RAMPS_D9_PIN
-#define FAN_PIN       RAMPS_D10_PIN
 
 //
 // Misc. Functions
