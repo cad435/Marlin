@@ -306,7 +306,7 @@
 // For the other hotends it is their distance from the extruder 0 hotend.
 //#define HOTEND_OFFSET_X { 0.0, 20.00 } // (mm) relative X-offset for each nozzle
 //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
-#define HOTEND_OFFSET_Z { 0.00, -0.50 }  // (mm) relative Z-offset for each nozzle
+#define HOTEND_OFFSET_Z { 0.00, -0.66 }  // (mm) relative Z-offset for each nozzle
 
 // @section machine
 
